@@ -1,0 +1,20 @@
+﻿//JSBlock1
+
+console.log("Here is in JSBlock1");
+
+
+
+\N---[
+//MyLangBlock1
+
+console.log("Here is in MyLangBlock1");
+
+
+
+]---\N
+
+//JSBlock2
+
+console.log("Here is in JSBlock2");
+
+
