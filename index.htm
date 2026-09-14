@@ -13,10 +13,48 @@
     padding: 12px;
     border-radius: 4px;
 }
+pre.code-box {
+    background: #ffffffdd;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    font-family: monospace;
+    max-height: 250px;
+    overflow-y: auto;
+}
 </style>
 <script src="https://cdn.jsdelivr.net/gh/NAS6mixfoolv/NAS6LIB@main/javascripts/nas6lib/common.js"></script>
 
-<script>
+<title>N6LTranspiler Test</title>
+</head>
+<body text="black" link="#3333cc" vlink="#663399" alink="#cc0000" bgcolor="#faebf1" background="./img/kumausagineko.jpg" onload="enter();">
+<b>
+<h1>N6LTranspiler Test</h1>    
+<br>
+
+<div id="div-output"></div>
+
+<!-- 追加の表示用エリア -->
+<h3>設定ファイル内容 (testconfig000.txt):</h3>
+<pre id="config-output" style="background:#fff; padding:8px; border:1px solid #ccc;"></pre>
+
+<h3>読み込んだソースコード (testcode000.txt):</h3>
+<pre id="code-output" style="background:#fff; padding:8px; border:1px solid #ccc;"></pre>
+
+<h3>トランスパイル後のJSコード:</h3>
+<pre id="js-output" style="background:#f0f8ff; padding:8px; border:1px solid #ccc;"></pre><br>
+<br>
+    
+<br>
+</b>
+<hr>
+<b>
+<br>
+<br>
+<h3>このスクリプトタグ自身のコード:</h3>
+<pre id="script-output" class="code-box" style="background:#fffaf0;">-</pre>    
+<script id="main-script">
 class N6LTranspilerBlock {
   constructor(mode, buffer) {
     this.mode = mode;      // "JS" or "MyLang"
@@ -160,17 +198,26 @@ function parseConfig(res) {
 let N6LTPConfig;
 
 function readedConfig(res) {
-  console.log("./data/testconfig000.txt\n" + res + "\n");
+  // 設定ファイルのテキストを専用エリアに表示
+  const configEl = document.getElementById("config-output");
+  if (configEl) configEl.textContent = res;
+
   N6LTPConfig = parseConfig(res);
   return true;
 }
 
 function readedCode(res) {
-  console.log("./data/testcode000.txt\n" + res + "\n");
-  const config = N6LTPConfig;
+  // 元コードを専用エリアに表示
+  const codeEl = document.getElementById("code-output");
+  if (codeEl) codeEl.textContent = res;
 
+  const config = N6LTPConfig;
   let TP = new N6LTranspiler(res, config);
   const jsCode = TP.transpile();
+
+  // トランスパイル後のJSコードを専用エリアに表示
+  const jsEl = document.getElementById("js-output");
+  if (jsEl) jsEl.textContent = jsCode;
 
   try {
       console.log("\nCode Is Executed.\n");
@@ -181,13 +228,17 @@ function readedCode(res) {
 
   return true;
 }
-
-
+    
 function analyzeCode(res) {
   return res;
 }
 
 async function enter(){
+  const scriptEl = document.getElementById("main-script");
+  const scriptOutputEl = document.getElementById("script-output");
+  if (scriptEl && scriptOutputEl) {
+      scriptOutputEl.textContent = scriptEl.textContent;
+  }
   const originalConsoleLog = console.log;
   const logBuffer = [];
 
@@ -213,21 +264,6 @@ async function enter(){
   await readCSV2('./data/testcode000.txt', analyzeCode, readedCode);
 }
 </script>
-<title></title>
-</head>
-<body text="black" link="#3333cc" vlink="#663399" alink="#cc0000" bgcolor="#faebf1" background="./img/kumausagineko.jpg" onload="enter();">
-<b>
-<br>
-<div id="div-output">
-</div>
-<br>
-<br>
-<br>
-</b>
-<hr>
-<b>
-<br>
-<br>
 <br>
 <br>
 </b>
