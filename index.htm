@@ -5,6 +5,15 @@
 <meta http-equiv="Content-Style-Type" content="text/css">
 <meta http-equiv="Content-Script-Type" content="text/javascript">
 
+<style>
+#div-output {
+    white-space: pre-wrap; /* \n による改行や連続するスペースをそのままブラウザに反映させる */
+    font-family: monospace; /* ログが見やすい等幅フォントにする */
+    background: #ffffffaa;   /* 背景を半透明の白にして見やすくする（お好みで） */
+    padding: 12px;
+    border-radius: 4px;
+}
+</style>
 <script src="https://cdn.jsdelivr.net/gh/NAS6mixfoolv/NAS6LIB@main/javascripts/nas6lib/common.js"></script>
 
 <script>
@@ -178,32 +187,27 @@ function analyzeCode(res) {
 }
 
 async function enter(){
-  // --- 1. console.log のハイジャック（div-outputへの出力連動） ---
   const originalConsoleLog = console.log;
   const logBuffer = [];
 
   console.log = function(...args) {
-    // 従来のブラウザコンソールへの出力も残す場合
     originalConsoleLog.apply(console, args);
 
-    // 引数を文字列化して結合
     const message = args.map(arg => {
         if (typeof arg === 'object') {
-            try { return JSON.stringify(arg); } catch(e) { return String(arg); }
+            try { return JSON.stringify(arg, null, 2); } catch(e) { return String(arg); }
         }
         return String(arg);
     }).join(" ");
 
     logBuffer.push(message);
 
-    // div-output が存在すればテキストを更新
     const outputEl = document.getElementById("div-output");
     if (outputEl) {
-        // 改行を維持するために <br> や pre タグ風にしたい場合は innerHTML や textContent を調整
-        outputEl.innerHTML = logBuffer.join("<br>");
+        outputEl.textContent = logBuffer.join("\n");
     }
   };
-  
+
   await readCSV2('./data/testconfig000.txt', analyzeCode, readedConfig);
   await readCSV2('./data/testcode000.txt', analyzeCode, readedCode);
 }
