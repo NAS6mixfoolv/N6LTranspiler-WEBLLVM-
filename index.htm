@@ -176,6 +176,32 @@ function analyzeCode(res) {
 }
 
 async function enter(){
+  // --- 1. console.log のハイジャック（div-outputへの出力連動） ---
+  const originalConsoleLog = console.log;
+  const logBuffer = [];
+
+  console.log = function(...args) {
+    // 従来のブラウザコンソールへの出力も残す場合
+    originalConsoleLog.apply(console, args);
+
+    // 引数を文字列化して結合
+    const message = args.map(arg => {
+        if (typeof arg === 'object') {
+            try { return JSON.stringify(arg); } catch(e) { return String(arg); }
+        }
+        return String(arg);
+    }).join(" ");
+
+    logBuffer.push(message);
+
+    // div-output が存在すればテキストを更新
+    const outputEl = document.getElementById("div-output");
+    if (outputEl) {
+        // 改行を維持するために <br> や pre タグ風にしたい場合は innerHTML や textContent を調整
+        outputEl.innerHTML = logBuffer.join("<br>");
+    }
+  };
+  
   await readCSV2('./data/testconfig000.txt', analyzeCode, readedConfig);
   await readCSV2('./data/testcode000.txt', analyzeCode, readedCode);
 }
@@ -185,6 +211,8 @@ async function enter(){
 <body text="black" link="#3333cc" vlink="#663399" alink="#cc0000" bgcolor="#faebf1" background="./img/kumausagineko.jpg" onload="enter();">
 <b>
 <br>
+<div id="div-output">
+</div>
 <br>
 <br>
 <br>
