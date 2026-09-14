@@ -1,0 +1,199 @@
+﻿<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta http-equiv="Content-Style-Type" content="text/css">
+<meta http-equiv="Content-Script-Type" content="text/javascript">
+
+<script src="https://cdn.jsdelivr.net/gh/NAS6mixfoolv/NAS6LIB@main/javascripts/nas6lib/common.js"></script>
+
+<script>
+class N6LTranspilerBlock {
+  constructor(mode, buffer) {
+    this.mode = mode;      // "JS" or "MyLang"
+    this.buffer = buffer;  // 行配列
+  }
+}
+
+class N6LTranspiler {
+  constructor(source, config) {
+    this.config = config;  // ← 新言語設定ファイル
+    this.blocks = N6LTranspiler.splitBlocks(source, config);
+  }
+
+  static splitBlocks(source, config) {
+    const lname = config.langName;
+    const start = config.langBlockSyntax.start;
+    const end   = config.langBlockSyntax.end;
+
+    const lines = source.split("\n");
+    const blocks = [];
+
+    let mode = "JS";
+    let buffer = [];
+
+    for (let line of lines) {
+
+      if (line.trim().startsWith(start)) {
+        if (buffer.length > 0) {
+          blocks.push(new N6LTranspilerBlock("JS", [...buffer]));
+          buffer = [];
+        }
+        mode = lname;
+        continue;
+      }
+
+      if (line.trim().startsWith(end)) {
+        if (buffer.length > 0) {
+          blocks.push(new N6LTranspilerBlock(lname, [...buffer]));
+          buffer = [];
+        }
+        mode = "JS";
+        continue;
+      }
+
+      buffer.push(line);
+    }
+
+    if (buffer.length > 0) {
+      blocks.push(new N6LTranspilerBlock(mode, [...buffer]));
+    }
+
+    return blocks;
+  }
+
+  transpile() {
+    let jsCode = "";
+
+    for (const blk of this.blocks) {
+      if (blk.mode === "JS") {
+        jsCode += blk.buffer.join("\n") + "\n";
+      } else {
+        jsCode += this.transpileMyLang(blk.buffer);
+      }
+    }
+
+    return jsCode;
+  }
+
+  transpileMyLang(lines) {
+    const code = lines.join("\n");
+
+    // ★ 設定ファイルの operators を使って演算子オーバーロード処理
+    const opMap = this.config.operators;
+
+    // ここであなたの既存の processExpr を呼び出せる
+    const transpiled = processExpr(code, opMap);
+
+    return "//[MyLangBlock transpiled]\n" + transpiled + "\n";
+  }
+}
+
+function processExpr(code, opMap) {
+    return code;
+}
+
+function parseConfig(res) {
+  let cfg;
+
+  try {
+    // JSON としてパース
+    cfg = JSON.parse(res);
+  } catch (e) {
+    console.error("Config JSON parse error:", e);
+    return null;
+  }
+
+  // --- 必須フィールドチェック ---
+  if (!cfg.langName) {
+    console.error("Config error: langName is required");
+    return null;
+  }
+
+  if (!cfg.langBlockSyntax ||
+      !cfg.langBlockSyntax.start ||
+      !cfg.langBlockSyntax.end) {
+    console.error("Config error: langBlockSyntax.start/end required");
+    return null;
+  }
+
+  if (!cfg.operators || typeof cfg.operators !== "object") {
+    console.error("Config error: operators required");
+    return null;
+  }
+
+  // --- operators の構造チェック ---
+  for (const op in cfg.operators) {
+    const item = cfg.operators[op];
+    if (!item.fn || typeof item.fn !== "string") {
+      console.error(`Config error: operator ${op} missing fn`);
+      return null;
+    }
+    if (typeof item.prec !== "number") {
+      console.error(`Config error: operator ${op} missing numeric prec`);
+      return null;
+    }
+  }
+
+  // --- keywords は任意 ---
+  if (!cfg.keywords) {
+    cfg.keywords = {};
+  }
+
+  // --- ここで必要なら追加の正規化処理 ---
+  // 例：演算子優先度のソート用キャッシュ
+  cfg._sortedOperators = Object.keys(cfg.operators)
+    .sort((a, b) => cfg.operators[b].prec - cfg.operators[a].prec);
+
+  return cfg;
+}
+
+let N6LTPConfig;
+
+function readedConfig(res) {
+  N6LTPConfig = parseConfig(res);
+  return true;
+}
+
+function readedCode(res) {
+  const config = N6LTPConfig;
+
+  let TP = new N6LTranspiler(res, config);
+  const jsCode = TP.transpile();
+
+  try {
+      eval(jsCode);
+  } catch(e) {
+      console.error("Transpiled code execution error:", e);
+  }
+
+  return true;
+}
+
+
+function analyzeCode(res) {
+  return res;
+}
+
+async function enter(){
+  await readCSV2('./data/testconfig000.txt', analyzeCode, readedConfig);
+  await readCSV2('./data/testcode000.txt', analyzeCode, readedCode);
+}
+</script>
+<title></title>
+</head>
+<body text="black" link="#3333cc" vlink="#663399" alink="#cc0000" bgcolor="#faebf1" background="./img/kumausagineko.jpg" onload="enter();">
+<b>
+<br>
+<br>
+<br>
+<br>
+</b>
+<hr>
+<b>
+<br>
+<br>
+<br>
+<br>
+</b>
+</html>
