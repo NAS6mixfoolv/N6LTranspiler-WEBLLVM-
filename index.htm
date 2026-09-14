@@ -151,11 +151,13 @@ function parseConfig(res) {
 let N6LTPConfig;
 
 function readedConfig(res) {
+  console.log("./data/testconfig000.txt\n" + res + "\n");
   N6LTPConfig = parseConfig(res);
   return true;
 }
 
 function readedCode(res) {
+  console.log("./data/testcode000.txt\n" + res + "\n");
   const config = N6LTPConfig;
 
   let TP = new N6LTranspiler(res, config);
