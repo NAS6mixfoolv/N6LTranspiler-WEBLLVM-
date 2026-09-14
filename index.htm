@@ -173,6 +173,7 @@ function readedCode(res) {
   const jsCode = TP.transpile();
 
   try {
+      console.log("\nCode Is Executed.\n");
       eval(jsCode);
   } catch(e) {
       console.error("Transpiled code execution error:", e);
