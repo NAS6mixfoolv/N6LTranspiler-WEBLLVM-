@@ -1,0 +1,36 @@
+﻿//JSBlock1
+
+console.log(`Here is in JSBlock1`);
+
+
+
+\N---[
+//MyLangBlock1
+
+console.log(`Here is in MyLangBlock1`);
+
+class FourArithmeticOperations{
+    constructor(num) {
+      this.val = num;
+    }
+    add(rh) { return new FourArithmeticOperations(this.val + rh.val); }
+    sub(rh) { return new FourArithmeticOperations(this.val - rh.val); }
+    mul(rh) { return new FourArithmeticOperations(this.val * rh.val); }
+    div(rh) { return new FourArithmeticOperations(this.val / rh.val); }
+}
+
+let a = new FourArithmeticOperations(5);
+let b = new FourArithmeticOperations(4);
+let c = new FourArithmeticOperations(2);
+
+\N---<
+\Ncout( a \N+( b \N) \N*( c \N) \N/( c \N) \N-( b \N).val \N);
+>---\N
+
+]---\N
+
+//JSBlock2
+
+console.log(`Here is in JSBlock2`);
+
+

@@ -1,0 +1,20 @@
+﻿{
+  "langName": "N6LScript",
+
+  "langBlockSyntax": {
+    "start": "\\N---[",
+    "end":   "]---\\N",
+    "esstart": "\\N---<",
+    "esend":   ">---\\N"
+  },
+
+  "replace": [
+    [ ")", "\\N)" ],
+    [ ".add(", "\\N+(" ],
+    [ ".sub(", "\\N-(" ],
+    [ ".mul(", "\\N*(" ],
+    [ ".div(", "\\N/(" ],
+    [ "console.log(", "\\Ncout(" ]
+  ]
+
+}
