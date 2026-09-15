@@ -198,12 +198,12 @@ class N6LTranspiler {
         const code = lines.join("\n");
 
         return (
-            "//[MyLangBlock transpiled]\n" +
+            `//[${this.config.langName} BlockStart transpiled]\n` +
             this.processExpr(
                 code,
                 this.config
             ) +
-            "\n"
+            `\n//[${this.config.langName} BlockEnd]\n`
         );
     }
 
