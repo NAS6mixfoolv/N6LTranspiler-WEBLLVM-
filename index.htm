@@ -88,17 +88,17 @@ class N6LTranspiler {
     // JS / N6LScript ブロック分離
     // ============================================================
 
-    static splitBlocks(source, config) {
+    static splitBlocks(source, config, flg = false) {
 
-        const lname = config.langName;
-        const start = config.langBlockSyntax.start;
-        const end   = config.langBlockSyntax.end;
+        const lname = flg ? "eraseSpaceBlock" : config.langName;
+        const start = flg ? config.langBlockSyntax.esstart : config.langBlockSyntax.start;
+        const end   = flg ? config.langBlockSyntax.esend : config.langBlockSyntax.end;
 
         const lines = source.split("\n");
 
         const blocks = [];
 
-        let mode = "JS";
+        let mode = flg ? "normalBlock" : "JS";
         let buffer = [];
 
 
@@ -110,7 +110,7 @@ class N6LTranspiler {
 
                     blocks.push(
                         new N6LTranspilerBlock(
-                            "JS",
+                            flg ? "normalBlock" : "JS",
                             [...buffer]
                         )
                     );
@@ -137,7 +137,7 @@ class N6LTranspiler {
                     buffer = [];
                 }
 
-                mode = "JS";
+                mode = flg ? "normalBlock" : "JS";
                 continue;
             }
 
@@ -195,7 +195,11 @@ class N6LTranspiler {
 
     transpileMyLang(lines) {
 
-        const code = lines.join("\n");
+        let code = lines.join("\n");
+
+        let blk = N6LTranspiler.splitBlocks(code, this.config, true);
+
+        code = this.eraseSpaceBlock(blk);
 
         return (
             `//[${this.config.langName} BlockStart transpiled]\n` +
@@ -207,6 +211,33 @@ class N6LTranspiler {
         );
     }
 
+    eraseSpaceBlock(blk) {
+        let rep = "";
+
+        for (const bk of blk) {
+
+            if (bk.mode === "normalBlock") {
+
+                rep += bk.buffer.join("\n");
+                rep += "\n";
+
+            } else {
+                // 1. まず配列を一旦テキスト（文字列）に結合する
+                let text = bk.buffer.join("\n");
+
+                // 2. タブとスペースを除去する（split / join を使用）
+                text = text.split('\t').join('');
+                text = text.split(' ').join('');
+
+                // 3. 処理済みの文字列を追加する
+                rep += text;
+                rep += "\n";
+            }
+        }
+
+        return rep;
+    }
+
     // ============================================================
     // 式処理
     // ============================================================
@@ -214,7 +245,7 @@ class N6LTranspiler {
     processExpr(code, config) {
         let processed = code;
 
-        // config.replace の適用: [i][1] → [i][0] に置換
+       // config.replace の適用: [i][1] → [i][0] に置換
         if (config && config.replace) {
             for (let i = 0; i < config.replace.length; i++) {
                 const target = config.replace[i][1];
@@ -330,12 +361,12 @@ async function enter(){
 
     try {
         // 1. コンフィグを確実にロードしてパース完了を待つ
-        const configRes = await (await fetch('./data/testconfig000.txt')).text();
+        const configRes = await (await fetch('./data/testconfig001.txt')).text();
         const analyzedConfig = analyzeConfig(configRes);
         readedConfig(analyzedConfig); // ここで N6LTPConfig が確実にセットされる
 
         // 2. コンフィグ完了後にコードをロードして処理
-        const codeRes = await (await fetch('./data/testcode000.txt')).text();
+        const codeRes = await (await fetch('./data/testcode001.txt')).text();
         const analyzedCodeText = analyzeCode(codeRes);
         readedCode(analyzedCodeText);
 
@@ -343,6 +374,7 @@ async function enter(){
         console.error("File load error:", e);
     }
 }
+
 
 
 
