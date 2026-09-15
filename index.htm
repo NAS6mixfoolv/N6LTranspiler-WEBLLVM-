@@ -63,6 +63,14 @@ class N6LTranspilerBlock {
 }
 
 
+class N6LTranspilerASTNode {
+    constructor(type, value = null) {
+        this.type = type;      // "SyntaxBlock", "Statement", "Text", etc.
+        this.value = value;    // 文やテキスト
+        this.children = [];    // 子ノード
+    }
+}
+
 // ================================================================
 // トランスパイラー
 // ================================================================
@@ -227,254 +235,37 @@ class N6LTranspiler {
         );
     }
 
-
     // ============================================================
     // 式処理
     // ============================================================
 
     processExpr(code, config) {
+        let processed = code;
 
-        // 1. 括弧構造をASTにする
-        const ast = this.parseParentheses(code, config);
+        // config.replace の適用: [i][1] → [i][0] に置換
+        if (config && config.replace) {
+            for (let i = 0; i < config.replace.length; i++) {
+                const target = config.replace[i][1];
+                const replacement = config.replace[i][0];
+      
+                // 正規表現のエスケープを避けるため split / join を使用して全置換
+                processed = processed.split(target).join(replacement);
+            }
+        }
 
-        // 2. 訪問済みチェック用セットを用意して、二重訪問を防ぎながら順序を決定する
-        const visited = new Set();
-        const ordered = this.evaluateByPrecedence(ast, visited);
-
-        // 3. JSコードへ戻す
-        return this.generateCode(ordered);
+        return processed;
     }
 
-    // ============================================================
-    // 括弧構造をAST化
-    // ============================================================
-
-    parseParentheses(code, config) {
-
-        const starts = config.langParentheses.start;
-        const ends   = config.langParentheses.end;
-        const pcfg   = config.langParentheses.config;
-
-        const root = {
-            type: "ROOT",
-            prec: 0,
-            children: []
-        };
-
-        let current = root;
-        const stack = [];
-
-        let text = "";
-
-        const flushText = () => {
-
-            if (text.length > 0) {
-
-                current.children.push({
-                    type: "TEXT",
-                    text: text
-                });
-
-                text = "";
-            }
-        };
-
-        let i = 0;
-
-        while (i < code.length) {
-
-            // 開き括弧
-            let openType = -1;
-
-            for (let k = 0; k < starts.length; k++) {
-
-                if (code.startsWith(starts[k], i)) {
-                    openType = k;
-                    break;
-                }
-            }
-
-            if (openType !== -1) {
-
-                flushText();
-
-                const info = pcfg[openType];
-
-                const node = {
-                    type: "PAREN",
-
-                    parentType: openType,
-
-                    open: starts[openType],
-                    close: ends[openType],
-
-                    parenType: info.type,
-                    prec: info.prec,
-
-                    children: []
-                };
-
-                current.children.push(node);
-
-                stack.push(current);
-                current = node;
-
-                i += starts[openType].length;
-
-                continue;
-            }
-
-            // 閉じ括弧
-            let closeType = -1;
-
-            for (let k = 0; k < ends.length; k++) {
-
-                if (code.startsWith(ends[k], i)) {
-                    closeType = k;
-                    break;
-                }
-            }
-
-            if (closeType !== -1) {
-
-                flushText();
-
-                if (stack.length === 0) {
-                    throw new Error(
-                        "Unexpected closing parenthesis: " +
-                        ends[closeType]
-                    );
-                }
-
-                if (current.parentType !== closeType) {
-                    throw new Error(
-                        "Mismatched parentheses"
-                    );
-                }
-
-                current = stack.pop();
-
-                i += ends[closeType].length;
-
-                continue;
-            }
-
-            text += code[i];
-            i++;
-        }
-
-        flushText();
-
-        if (stack.length !== 0) {
-            throw new Error("Unclosed parenthesis");
-        }
-
-        return root;
-    }
-
-    evaluateByPrecedence(node, visited) {
-        if (visited.has(node)) {
-            return [];
-        }
-        visited.add(node);
-
-        if (node.type === "TEXT") {
-            return [node];
-        }
-
-        if (node.type === "ROOT") {
-            return this.evaluateChildren(node.children, visited);
-        }
-
-        if (node.type === "PAREN") {
-            return this.evaluateParen(node, visited);
-        }
-
-        return [];
-    }
-
-    evaluateChildren(children, visited) {
-        const result = [];
-
-        for (let i = 0; i < children.length; i++) {
-            const child = children[i];
-            result.push(...this.evaluateByPrecedence(child, visited));
-        }
-
-        return result;
-    }
-
-    evaluateParen(node, visited) {
-        const result = [];
-
-        // 1. 自分より優先度の高い子孫を先に収集して巻き上げる（優先度降順でソート）
-        const high = this.collectHigherPrecedence(node, visited);
-        result.push(...high);
-
-        // 2. 残りの通常の子要素を順番に処理
-        for (let i = 0; i < node.children.length; i++) {
-            const child = node.children[i];
-            if (visited.has(child)) {
-                continue;
-            }
-            result.push(...this.evaluateByPrecedence(child, visited));
-        }
-
-        return result;
-    }
-
-    collectHigherPrecedence(node, visited) {
-        const result = [];
-
-        // 優先度が高い順に安全に評価するためソート
-        const sortedChildren = [...node.children].sort((a, b) => (b.prec || 0) - (a.prec || 0));
-
-        for (const child of sortedChildren) {
-            if (child.type !== "PAREN") {
-                continue;
-            }
-            if (visited.has(child)) {
-                continue;
-            }
-
-            // 子の優先度が親より高い場合、優先して回収
-            if (child.prec > node.prec) {
-                result.push(...this.collectHigherPrecedence(child, visited));
-                result.push(...this.evaluateByPrecedence(child, visited));
-            }
-        }
-
-        return result;
-    }
-
-    generateCode(nodes) {
-        let out = "";
-
-        for (const node of nodes) {
-
-            if (node.type === "TEXT") {
-
-                // 1. 文を ; で分離
-                const stmts = node.text.split(";");
-
-                for (let s of stmts) {
-                    s = s.trim();
-                    if (s.length === 0) continue;
-
-                    // 2. 必要ならセミコロンを付け直す
-                    out += s + ";\n";
-                }
-            }
-        }
-
-        return out;
-    }
 }
 
 
 // ================================================================
 // グローバル
 // ================================================================
+
+function add(a, b) {
+  console.log(a + b);
+}
 
 function parseConfig(res) {
   let cfg;
@@ -492,53 +283,6 @@ function parseConfig(res) {
     console.error("Config error: langName is required");
     return null;
   }
-
-  if (!cfg.langBlockSyntax ||
-      !cfg.langBlockSyntax.start ||
-      !cfg.langBlockSyntax.end) {
-    console.error("Config error: langBlockSyntax.start/end required");
-    return null;
-  }
-
-  if (!cfg.langParentheses ||
-      !Array.isArray(cfg.langParentheses.start) ||
-      !Array.isArray(cfg.langParentheses.end)) {
-    console.error("Config error: langParentheses.start/end must be arrays");
-    return null;
-  }
-
-  if (cfg.langParentheses.start.length !== cfg.langParentheses.end.length) {
-    console.error("Config error: start/end parentheses count mismatch");
-    return null;
-  }
-
-  if (!cfg.operators || typeof cfg.operators !== "object") {
-    console.error("Config error: operators required");
-    return null;
-  }
-
-  // --- operators の構造チェック ---
-  for (const op in cfg.operators) {
-    const item = cfg.operators[op];
-    if (!item.fn || typeof item.fn !== "string") {
-      console.error(`Config error: operator ${op} missing fn`);
-      return null;
-    }
-    if (typeof item.prec !== "number") {
-      console.error(`Config error: operator ${op} missing numeric prec`);
-      return null;
-    }
-  }
-
-  // --- keywords は任意 ---
-  if (!cfg.keywords) {
-    cfg.keywords = {};
-  }
-
-  // --- ここで必要なら追加の正規化処理 ---
-  // 例：演算子優先度のソート用キャッシュ
-  cfg._sortedOperators = Object.keys(cfg.operators)
-    .sort((a, b) => cfg.operators[b].prec - cfg.operators[a].prec);
 
   return cfg;
 }
@@ -627,6 +371,7 @@ async function enter(){
         console.error("File load error:", e);
     }
 }
+
 
 
 </script>
