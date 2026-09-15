@@ -1,10 +1,20 @@
 ﻿{
-
   "langName": "N6LScript",
 
   "langBlockSyntax": {
     "start": "\\N---[",
-    "end": "]---\\N"
+    "end":   "]---\\N"
+  },
+
+  "langParentheses": {
+    "start": ["\\N(", "\\N{", "\\N["],
+    "end":   ["\\N)", "\\N}", "\\N]"],
+
+    "config": [
+      { "type": "group", "prec": 7 },
+      { "type": "block", "prec": 8 },
+      { "type": "array", "prec": 9 }
+    ]
   },
 
   "operators": {
@@ -16,5 +26,4 @@
     "struct": "STRUCT_DEF",
     "fn": "FUNCTION_DEF"
   }
-
 }
