@@ -62,15 +62,6 @@ class N6LTranspilerBlock {
     }
 }
 
-
-class N6LTranspilerASTNode {
-    constructor(type, value = null) {
-        this.type = type;      // "SyntaxBlock", "Statement", "Text", etc.
-        this.value = value;    // 文やテキスト
-        this.children = [];    // 子ノード
-    }
-}
-
 // ================================================================
 // トランスパイラー
 // ================================================================
