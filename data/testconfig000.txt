@@ -6,24 +6,9 @@
     "end":   "]---\\N"
   },
 
-  "langParentheses": {
-    "start": ["\\N(", "\\N{", "\\N["],
-    "end":   ["\\N)", "\\N}", "\\N]"],
+  "replace": [
+    [ "add(", "\\N+(" ],
+    [ ")", "\\N)" ]
+  ]
 
-    "config": [
-      { "type": "group", "prec": 7 },
-      { "type": "block", "prec": 8 },
-      { "type": "array", "prec": 9 }
-    ]
-  },
-
-  "operators": {
-    "O_add": { "fn": "add", "prec": 1 },
-    "O_mul": { "fn": "mul", "prec": 2 }
-  },
-
-  "keywords": {
-    "struct": "STRUCT_DEF",
-    "fn": "FUNCTION_DEF"
-  }
 }

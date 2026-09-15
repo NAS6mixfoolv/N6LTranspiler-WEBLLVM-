@@ -9,10 +9,10 @@ console.log("Here is in JSBlock1");
 
 console.log("Here is in MyLangBlock1");
 
-\N{ console.log("0");
-\N( console.log("1"); \N[ console.log("2"); \N] console.log("3"); \N) console.log("4");
-\N( console.log("5"); \N( console.log("6"); \N[ console.log("7"); \N] console.log("8"); \N) console.log("9"); \N[ console.log("10"); \N] console.log("11"); \N) console.log("12");
-\N} console.log("13");
+const a = 333;
+const b = 444;
+
+\N+(a,b\N);
 
 
 ]---\N
