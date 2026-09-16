@@ -126,18 +126,18 @@ JS code
    ".add(","add"
   ]
 ```
-
-configが上記の設定ならば独自スクリプト側で
-Before
+  
+configが上記の設定ならば独自スクリプト側で  
+Before  
 ```
 one cat add two cats.
 ```
-After
+After  
 ```
 new Num(1).add(new Num(2));
 ```
-に多分変換します。
-
+に多分変換します。  
+  
 ---
 
 ### ✔ **3. JS → N6L の危険性を回避する設計**
