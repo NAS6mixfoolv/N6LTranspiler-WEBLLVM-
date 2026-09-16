@@ -1,0 +1,15 @@
+﻿{
+  "langName": "N6LScript",
+
+  "langBlockSyntax": {
+    "start": "\\N---[",
+    "end":   "]---\\N",
+    "esstart": "\\N---<",
+    "esend":   ">---\\N"
+  },
+
+ "replace": [
+   ["console.log","printf"]
+  ]
+
+}
