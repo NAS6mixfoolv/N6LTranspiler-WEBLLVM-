@@ -130,7 +130,7 @@ and removed during conversion to JS.
 
 Before
 ```
-\L( \L( a \N+ b \M)*c \M);
+\L( \L( a \N+ b \M)* c \M);
 ```
 
 → In JS, this simply becomes
