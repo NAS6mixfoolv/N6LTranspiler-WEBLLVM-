@@ -1,13 +1,13 @@
 ﻿//JSBlock1
 
-console.log(`Here is in JSBlock1`);
+console.log(`Inside JSBlock1`);
 
 
 
 \N---[
 //MyLangBlock1
 
-console.log(`Here is in MyLangBlock1`);
+console.log(`Inside MyLangBlock1`);
 
 class FourArithmeticOperations{
     constructor(num) {
@@ -31,6 +31,6 @@ let c = new FourArithmeticOperations(2);
 
 //JSBlock2
 
-console.log(`Here is in JSBlock2`);
+console.log(`Inside JSBlock2`);
 
 
