@@ -136,6 +136,9 @@ After
 ```
 new Num(1).add(new Num(2));
 ```
+Spaces and tabs are removed prior to substitution.  
+While this may lead to unintended side effects (such as incorrect conversions),  
+removing whitespace beforehand is necessary to enable the conversion of syntax like `new Num(1)`.  
   
 ---
 
