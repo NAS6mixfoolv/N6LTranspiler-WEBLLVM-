@@ -43,6 +43,8 @@
 <br>
 
 <br>
+<a href="https://nas6mixfoolv.github.io/N6LTranspiler-WEBLLVM-/?file=002">Further simplified notation</a><br>
+<br>
 </b>
 <hr>
 <b>
@@ -320,6 +322,10 @@ function analyzeCode(res) {
 }
 
 async function enter(){
+  const urlParams = new URLSearchParams(window.location.search);    const fileno = urlParams.get('file');
+  const fcodename = fileno ? `./data/testcode${fileno}.txt` : `./data/testcode001.txt`;
+  const fconfigname = fileno ? `./data/testconfig${fileno}.txt` : `./data/testconfig001.txt`;
+
   const scriptEl = document.getElementById("main-script");
   const scriptOutputEl = document.getElementById("script-output");
   if (scriptEl && scriptOutputEl) {
@@ -346,12 +352,12 @@ async function enter(){
 
   try {
     // 1. Ensure the config is loaded and parsing is complete
-    const configRes = await (await fetch('./data/testconfig001.txt')).text();
+    const configRes = await (await fetch(fconfigname)).text();
     const analyzedConfig = analyzeConfig(configRes);
     readedConfig(analyzedConfig); // N6LTPConfig is guaranteed to be set here
 
     // 2. Load and process the code after the config is ready
-    const codeRes = await (await fetch('./data/testcode001.txt')).text();
+    const codeRes = await (await fetch(fcodename)).text();
     const analyzedCodeText = analyzeCode(codeRes);
     readedCode(analyzedCodeText);
 
