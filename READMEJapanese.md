@@ -4,6 +4,8 @@ N6LScript は、**JS のコードブロック内に独自記法を混在させ�
 
 👉 [DemoPage](https://nas6mixfoolv.github.io/N6LTranspiler-WEBLLVM-/)
 
+👉 [README English ver.](https://github.com/NAS6mixfoolv/N6LTranspiler-WEBLLVM-/blob/main/README.md)
+
 ---
 
 ## 🚀 目的  
