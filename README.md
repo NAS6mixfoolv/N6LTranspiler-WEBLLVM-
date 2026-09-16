@@ -14,6 +14,8 @@ The objectives of N6LTranspiler-WEBLLVM are as follows:
 - **To eliminate JavaScript's ambiguities and introduce mathematically and structurally rigorous notation**
 - **To limit the scope of conversion using block structures, thereby preventing erroneous conversions**
 
+In simple terms, the implementation merely involves creating a substitution table, yet it results in a rather unique touch.
+
 ---
 
 ## 🧩 Features
