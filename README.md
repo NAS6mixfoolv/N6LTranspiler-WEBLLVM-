@@ -1,6 +1,7 @@
 # ✨ N6LTranspiler-WEBLLVM-
-This is a transpiler designed to safely embed a user-defined language (N6LScript)—based on JavaScript—directly into JavaScript code.
-N6LScript is a lightweight Domain-Specific Language (DSL) that allows you to **mix custom syntax within JavaScript code blocks** and ultimately transpile it into pure JavaScript.
+> N6LTranspiler-WEBLLVM is a transpiler designed to safely embed Domain-Specific Languages ??(DSLs) within JavaScript.
+> It converts custom syntax found in specific blocks into pure JavaScript based on a substitution table.
+> Conversion and execution can be performed in real-time within the browser.
 
 👉 [DemoPage](https://nas6mixfoolv.github.io/N6LTranspiler-WEBLLVM-/)  
 
@@ -95,6 +96,18 @@ This indicates the start of a block within a custom script block where spaces an
 **config.langBlockSyntax.esend**:  
 This indicates the end of a block within a custom script block where spaces and tabs are removed.  
   
+```
+JS code
+\N---[
+   N6LScript code
+   \N---<
+      N6LScript code(no spaces)
+   >---\N
+   N6LScript code
+]---\N
+JS code
+```
+  
 ### Regarding the Substitution Table Format  
 The substitution table is structured as `[JS side, Custom syntax side]`.  
 This is because the initial design focused primarily on how to map JavaScript syntax to the custom syntax.  
@@ -115,12 +128,14 @@ This ensures that
 For instance, auxiliary symbols like `\L(` can be used exclusively within N6LScript
 and removed during conversion to JS.
 
+Before
 ```
 \L( \L( a \N+ b \M)*c \M);
 ```
 
 → In JS, this simply becomes
 
+After
 ```
 a.add(b).mul(c);
 ```
