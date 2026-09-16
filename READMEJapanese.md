@@ -82,6 +82,17 @@ console.log(a.add(b).mul(c));
 
 へ変換されます。
 
+## langBlockSyntaxについて
+
+**config.langBlockSyntax.start**:  
+これは独自スクリプトブロックの開始を示し、  
+**config.langBlockSyntax.end**:  
+これは独自スクリプトブロックの終了を示します。  
+**config.langBlockSyntax.esstart**:  
+これは独自スクリプトブロック内でスペースとタブを削除するブロックの開始を示し、  
+**config.langBlockSyntax.esend**:  
+これは独自スクリプトブロック内でスペースとタブを削除するブロックの終了を示します。  
+  
 ---
 
 ### ✔ **3. JS → N6L の危険性を回避する設計**
