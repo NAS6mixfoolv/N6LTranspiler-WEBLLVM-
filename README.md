@@ -1,7 +1,8 @@
 # ✨ N6LTranspiler-WEBLLVM-
-A project to create a transpiler that uses JavaScript as a base language and hosts a user-defined language within it.
+This is a transpiler designed to safely embed a user-defined language (N6LScript)—based on JavaScript—directly into JavaScript code.
+N6LScript is a lightweight Domain-Specific Language (DSL) that allows you to **mix custom syntax within JavaScript code blocks** and ultimately transpile it into pure JavaScript.
 
-[DemoPage](https://nas6mixfoolv.github.io/N6LTranspiler-WEBLLVM-/)  
+👉 [DemoPage](https://nas6mixfoolv.github.io/N6LTranspiler-WEBLLVM-/)  
 
 ---
 
