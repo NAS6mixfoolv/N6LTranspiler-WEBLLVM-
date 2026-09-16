@@ -1,0 +1,38 @@
+﻿//JSBlock1
+
+console.log(`Inside JSBlock1`);
+
+
+
+\N---[
+//MyLangBlock1
+
+console.log(`Inside MyLangBlock1`);
+
+class \Num{
+    constructor(num) {
+      this.val = num;
+    }
+    add(rh) { return new \Num(this.val + rh.val); }
+    sub(rh) { return new \Num(this.val - rh.val); }
+    mul(rh) { return new \Num(this.val * rh.val); }
+    div(rh) { return new \Num(this.val / rh.val); }
+}
+
+let a = new \Num(5);
+let b = new \Num(4);
+let c = new \Num(2);
+
+\N---<
+\cout( a \+ b \)* c \)/ c \)- b ) .val );
+//If you insist on mathematical rigor, you would write it as follows:
+//\cout( \( a \+ b ) \* c \)/ c \)- b ) .val );
+>---\N
+
+]---\N
+
+//JSBlock2
+
+console.log(`Inside JSBlock2`);
+
+
