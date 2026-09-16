@@ -122,7 +122,7 @@ JS code
    "new Num(1)","one",
    "new Num(2)","two",
    "","cat",
-   ");","cat.", 
+   ");","cats.", 
    ".add(","add"
   ]
 ```
@@ -130,7 +130,7 @@ JS code
 configが上記の設定ならば独自スクリプト側で
 Before
 ```
-one cat add two cat.
+one cat add two cats.
 ```
 After
 ```
