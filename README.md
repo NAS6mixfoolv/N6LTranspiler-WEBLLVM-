@@ -84,7 +84,7 @@ to be ultimately converted into the following JS code:
 console.log(a.add(b).mul(c));
 ```
 
-## About langBlockSyntax
+### About langBlockSyntax
   
 **config.langBlockSyntax.start**:  
 This indicates the start of a custom script block,  
@@ -94,6 +94,11 @@ This indicates the end of a custom script block.
 This indicates the start of a block within a custom script block where spaces and tabs are removed,  
 **config.langBlockSyntax.esend**:  
 This indicates the end of a block within a custom script block where spaces and tabs are removed.  
+  
+### Regarding the Substitution Table Format  
+The substitution table is structured as `[JS side, Custom syntax side]`.  
+This is because the initial design focused primarily on how to map JavaScript syntax to the custom syntax.  
+In the actual transpilation process, the custom syntax side ([1]) is replaced with the JS side ([0]).  
   
 ---
 
