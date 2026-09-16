@@ -24,7 +24,7 @@ let b = new FourArithmeticOperations(4);
 let c = new FourArithmeticOperations(2);
 
 \N---<
-\Ncout( a \N+( b \N) \N*( c \N) \N/( c \N) \N-( b \N).val \N);
+\Ncout( a \N+ b \M* c \M/ c \M- b \M) .val );
 >---\N
 
 ]---\N
