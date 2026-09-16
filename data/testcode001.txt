@@ -26,7 +26,7 @@ let c = new \Num(2);
 \N---<
 \Ncout( a \N+ b \M* c \M/ c \M- b \M) .val );
 //If you insist on mathematical rigor, you would write it as follows:
-//\Ncout( ( a \N+ b ) \N* c \M/ c \M- b \M) .val );
+//\Ncout( \L( a \N+ b ) \N* c \M/ c \M- b \M) .val );
 >---\N
 
 ]---\N
