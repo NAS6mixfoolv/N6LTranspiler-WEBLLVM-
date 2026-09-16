@@ -1,6 +1,7 @@
 # ✨ N6LTranspiler-WEBLLVM  
-JavaScript をベース言語として、ユーザー定義言語（N6LScript）を JS 内に安全に埋め込むためのトランスパイラです。  
-N6LScript は、**JS のコードブロック内に独自記法を混在させ、最終的に純粋な JavaScript に変換する**ための軽量 DSL（Domain Specific Language）です。
+> N6LTranspiler-WEBLLVM は、JavaScript の中にユーザー定義言語（DSL）を安全に埋め込むためのトランスパイラです。  
+> 特定ブロック内の独自記法を、置換テーブルに基づいて純粋な JavaScript に変換します。
+> ブラウザ上でリアルタイムに変換・実行できます。
 
 👉 [DemoPage](https://nas6mixfoolv.github.io/N6LTranspiler-WEBLLVM-/)
 
@@ -96,6 +97,18 @@ console.log(a.add(b).mul(c));
 これは独自スクリプトブロック内でスペースとタブを削除するブロックの開始を示し、  
 **config.langBlockSyntax.esend**:  
 これは独自スクリプトブロック内でスペースとタブを削除するブロックの終了を示します。  
+
+```
+JS code
+\N---[
+   N6LScript code
+   \N---<
+      N6LScript code(no spaces)
+   >---\N
+   N6LScript code
+]---\N
+JS code
+```
   
 ### 置換テーブルの方向について
 置換テーブルは `[JS側, 独自構文側]` の順で記述しています。  
@@ -117,12 +130,14 @@ N6LScript は **JS に存在しない記号体系**で構成されているた�
 例えば `\L(` のような補助記号を N6LScript 側だけで使い、  
 JS に変換するときは削除することができます。
 
+Before
 ```
 \L( \L( a \N+ b \M)*c \M);
 ```
 
 → JS では単に
 
+After
 ```
 a.add(b).mul(c);
 ```
