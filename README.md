@@ -131,7 +131,7 @@ and removed during conversion to JS.
 Before
 ```
 \N---<
-\L( \L( a \N+ b \M)* c \M);
+\L( \L( a \N+ b ) \N* c \M);
 >---\N
 ```
 
