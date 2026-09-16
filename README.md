@@ -39,20 +39,38 @@ You can define mappings from
 Example:
 
 ```json
-"replace": [
-[ ".add(", "\\N+" ],
-[ ".sub(", "\\N-" ],
-[ ".mul(", "\\N*" ],
-[ ".div(", "\\N/" ],
-[ "console.log(", "\\Ncout(" ],
-[ "FourArithmeticOperations", "\\Num" ]
-]
+{
+  "langName": "N6LScript",
+
+  "langBlockSyntax": {
+    "start": "\\N---[",
+    "end":   "]---\\N",
+    "esstart": "\\N---<",
+    "esend":   ">---\\N"
+  },
+
+  "replace": [
+    [ "", "\\L(" ],
+    [ ")", "\\M)" ],
+    [ ").add(", "\\M+" ],
+    [ ").sub(", "\\M-" ],
+    [ ").mul(", "\\M*" ],
+    [ ").div(", "\\M/" ],
+    [ ".add(", "\\N+" ],
+    [ ".sub(", "\\N-" ],
+    [ ".mul(", "\\N*" ],
+    [ ".div(", "\\N/" ],
+    [ "console.log(", "\\Ncout(" ],
+    [ "FourArithmeticOperations", "\\Num" ]
+  ]
+
+}
 ```
 
 This allows N6LScript notation like this:
 
 ```
-\Ncout( a \N+ b \N* c )
+\Ncout( a \N+ b \M* c \M) )
 ```
 
 to be ultimately converted into the following JS code:
@@ -98,7 +116,7 @@ let b = new \Num(4);
 let c = new \Num(2);
 
 \N---<
-\Ncout( a \N+ b \N* c \N/ c \N- b \N) .val );
+\Ncout( a \N+ b \M* c \M/ c \M- b \M) .val );
 >---\N
 ]---\N
 ```
