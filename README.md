@@ -80,6 +80,17 @@ to be ultimately converted into the following JS code:
 console.log(a.add(b).mul(c));
 ```
 
+## About langBlockSyntax
+
+**config.langBlockSyntax.start**:
+This indicates the start of a custom script block,
+**config.langBlockSyntax.end**:
+This indicates the end of a custom script block.
+**config.langBlockSyntax.esstart**:
+This indicates the start of a block within a custom script block where spaces and tabs are removed,
+**config.langBlockSyntax.esend**:
+This indicates the end of a block within a custom script block where spaces and tabs are removed.
+
 ---
 
 ### ✔ **3. Design to Avoid JS → N6L Ambiguity**
