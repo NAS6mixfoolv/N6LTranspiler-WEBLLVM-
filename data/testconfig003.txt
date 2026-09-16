@@ -1,0 +1,20 @@
+﻿{
+  "langName": "N6LScript",
+
+  "langBlockSyntax": {
+    "start": "\\N---[",
+    "end":   "]---\\N",
+    "esstart": "\\N---<",
+    "esend":   ">---\\N"
+  },
+
+ "replace": [
+   ["new Num(1)","one"],
+   ["new Num(2)","two"],
+   [").val","cats."], 
+   ["","cat"],
+   [".add(","add"],
+   ["add(rh)",".add((rh)"]
+  ]
+
+}

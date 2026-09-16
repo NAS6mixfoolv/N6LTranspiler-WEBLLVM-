@@ -1,0 +1,33 @@
+﻿//JSBlock1
+
+console.log(`Inside JSBlock1`);
+
+
+
+\N---[
+//MyLangBlock1
+
+console.log(`Inside MyLangBlock1`);
+
+class Num{
+    constructor(num) {
+      this.val = num;
+    }
+    add(rh) { return new Num(this.val + rh.val); }
+    sub(rh) { return new Num(this.val - rh.val); }
+    mul(rh) { return new Num(this.val * rh.val); }
+    div(rh) { return new Num(this.val / rh.val); }
+}
+
+
+\N---<
+console.log(one cat add two cats.);
+>---\N
+
+]---\N
+
+//JSBlock2
+
+console.log(`Inside JSBlock2`);
+
+
