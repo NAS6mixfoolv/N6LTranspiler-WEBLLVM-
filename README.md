@@ -4,6 +4,8 @@ N6LScript is a lightweight Domain-Specific Language (DSL) that allows you to **m
 
 👉 [DemoPage](https://nas6mixfoolv.github.io/N6LTranspiler-WEBLLVM-/)  
 
+👉 [README 日本語版](https://github.com/NAS6mixfoolv/N6LTranspiler-WEBLLVM-/blob/main/READMEJapanese.md)
+
 ---
 
 ## 🚀 Purpose
