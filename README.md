@@ -96,13 +96,13 @@ For instance, auxiliary symbols like `\L(` can be used exclusively within N6LScr
 and removed during conversion to JS.
 
 ```
-\L( a \N+ b )
+\L( \L( a \N+ b \M)*c \M);
 ```
 
 → In JS, this simply becomes
 
 ```
-a.add(b)
+a.add(b).mul(c);
 ```
 
 ---
