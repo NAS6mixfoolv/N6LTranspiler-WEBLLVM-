@@ -18,7 +18,8 @@
     [ ".sub(", "\\N-" ],
     [ ".mul(", "\\N*" ],
     [ ".div(", "\\N/" ],
-    [ "console.log(", "\\Ncout(" ]
+    [ "console.log(", "\\Ncout(" ],
+    [ "FourArithmeticOperations", "\\N4AO" ]
   ]
 
 }
