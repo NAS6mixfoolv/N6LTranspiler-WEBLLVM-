@@ -120,7 +120,7 @@ In the actual transpilation process, the custom syntax side ([1]) is replaced wi
 "new Num(1)","one",
 "new Num(2)","two",
 "","cat",
-");","cat.",
+");","cats.",
 ".add(","add"
 ]
 ```
@@ -129,7 +129,7 @@ If the configuration is set as shown above, the custom script will likely transf
 
 Before
 ```
-one cat add two cat.
+one cat add two cats.
 ```
 
 After
