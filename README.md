@@ -112,6 +112,30 @@ JS code
 The substitution table is structured as `[JS side, Custom syntax side]`.  
 This is because the initial design focused primarily on how to map JavaScript syntax to the custom syntax.  
 In the actual transpilation process, the custom syntax side ([1]) is replaced with the JS side ([0]).  
+
+### You can probably do silly things like this, too
+
+```
+"replace": [
+"new Num(1)","one",
+"new Num(2)","two",
+"","cat",
+");","cat.",
+".add(","add"
+]
+```
+
+If the configuration is set as shown above, the custom script will likely transform:
+
+Before
+```
+one cat add two cat.
+```
+
+After
+```
+new Num(1).add(new Num(2));
+```
   
 ---
 
