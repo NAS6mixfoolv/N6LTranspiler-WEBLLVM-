@@ -9,19 +9,19 @@ console.log(`Inside JSBlock1`);
 
 console.log(`Inside MyLangBlock1`);
 
-class \N4AO{
+class \Num{
     constructor(num) {
       this.val = num;
     }
-    add(rh) { return new \N4AO(this.val + rh.val); }
-    sub(rh) { return new \N4AO(this.val - rh.val); }
-    mul(rh) { return new \N4AO(this.val * rh.val); }
-    div(rh) { return new \N4AO(this.val / rh.val); }
+    add(rh) { return new \Num(this.val + rh.val); }
+    sub(rh) { return new \Num(this.val - rh.val); }
+    mul(rh) { return new \Num(this.val * rh.val); }
+    div(rh) { return new \Num(this.val / rh.val); }
 }
 
-let a = new \N4AO(5);
-let b = new \N4AO(4);
-let c = new \N4AO(2);
+let a = new \Num(5);
+let b = new \Num(4);
+let c = new \Num(2);
 
 \N---<
 \Ncout( a \N+ b \M* c \M/ c \M- b \M) .val );
