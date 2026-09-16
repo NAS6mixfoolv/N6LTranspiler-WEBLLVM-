@@ -151,6 +151,9 @@ console.log(a.add(b).mul(c).div(c).sub(b).val);
 - **N6LTranspilerBlock**
 A class that holds the block type (JS / N6LScript) and its content.
 
+- **N6LTranspiler**
+A class for converting N6LScript or custom syntax into JS.
+
 - **BlockParser**
 Decomposes source code into individual blocks.
 
