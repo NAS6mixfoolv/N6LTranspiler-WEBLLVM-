@@ -118,24 +118,28 @@ JS code
 ### こんなおふざけも多分できます
 
 ```
- "replace": [
-   ["new Num(1)","one"],
-   ["new Num(2)","two"],
-   [");","cats."], 
-   ["","cat"],
-   [".add(","add"]
-  ]
+"replace": [
+["new Num(1)","one"],
+["new Num(2)","two"],
+[").val+AAA;","cats."],
+["","cat"],
+["` cats.`","AAA"],
+[".add(","add"]
+]
 ```
-  
+
 configが上記の設定ならば独自スクリプト側で  
-Before  
+
+Before
 ```
-one cat add two cats.
+console.log(one cat add two cats.);
 ```
-After  
+
+After
 ```
-new Num(1).add(new Num(2));
+console.log(new Num(1).add(new Num(2)).val+` cats.`);
 ```
+
 に多分変換します。  
   
 確か置換前にスペースやタブを消去するので  
