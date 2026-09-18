@@ -11,8 +11,9 @@
  "replace": [
    ["new Num(1)","one"],
    ["new Num(2)","two"],
-   [").val","cats."], 
+   [").val+AAA","cats."], 
    ["","cat"],
+   ["` cats.`","AAA"],
    [".add(","add"],
    ["add(rh)",".add((rh)"]
   ]
