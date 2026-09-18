@@ -140,8 +140,11 @@ console.log(new Num(1).add(new Num(2)).val+` cats.`);
 Spaces and tabs are removed prior to substitution.  
 While this may lead to unintended side effects (such as incorrect conversions),  
 removing whitespace beforehand is necessary to enable the conversion of syntax like `new Num(1)`.  
-");","cats.",  
-"","cat",  
+```
+[").val+AAA;","cats."],
+["","cat"],
+["` cats.`","AAA"],
+```
 Since the replacements are performed in order from the top,  
 it seems likely that incorrect conversions would occur if this specific order isn't followed.  
   
