@@ -119,8 +119,9 @@ In the actual transpilation process, the custom syntax side ([1]) is replaced wi
 "replace": [
 ["new Num(1)","one"],
 ["new Num(2)","two"],
-[");","cats."],
+[").val+AAA;","cats."],
 ["","cat"],
+["` cats.`","AAA"],
 [".add(","add"]
 ]
 ```
@@ -129,12 +130,12 @@ If the configuration is set as shown above, the custom script will likely transf
 
 Before
 ```
-one cat add two cats.
+console.log(one cat add two cats.);
 ```
 
 After
 ```
-new Num(1).add(new Num(2));
+console.log(new Num(1).add(new Num(2)).val+` cats.`);
 ```
 Spaces and tabs are removed prior to substitution.  
 While this may lead to unintended side effects (such as incorrect conversions),  
