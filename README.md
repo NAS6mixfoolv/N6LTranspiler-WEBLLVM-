@@ -117,11 +117,11 @@ In the actual transpilation process, the custom syntax side ([1]) is replaced wi
 
 ```
 "replace": [
-"new Num(1)","one",
-"new Num(2)","two",
-");","cats.",
-"","cat",
-".add(","add"
+["new Num(1)","one"],
+["new Num(2)","two"],
+[");","cats."],
+["","cat"],
+[".add(","add"]
 ]
 ```
 
