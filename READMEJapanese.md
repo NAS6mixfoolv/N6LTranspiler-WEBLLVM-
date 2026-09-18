@@ -119,11 +119,11 @@ JS code
 
 ```
  "replace": [
-   "new Num(1)","one",
-   "new Num(2)","two",
-   ");","cats.", 
-   "","cat",
-   ".add(","add"
+   ["new Num(1)","one"],
+   ["new Num(2)","two"],
+   [");","cats."], 
+   ["","cat"],
+   [".add(","add"]
   ]
 ```
   
